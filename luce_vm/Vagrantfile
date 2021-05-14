@@ -24,7 +24,7 @@ Vagrant.configure("2") do |config|
     lucevm.vm.network :forwarded_port, guest: 8889, host: 8889
 
     # Ganache Blockchain
-    # lucevm.vm.network :forwarded_port, guest: 8545, host: 8545
+    #lucevm.vm.network :forwarded_port, guest: 8545, host: 8545
 
     # Django - Open a few ports for testing multiple servers
     lucevm.vm.network :forwarded_port, guest: 8000, host: 8000
