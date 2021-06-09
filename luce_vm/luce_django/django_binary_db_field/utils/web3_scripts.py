@@ -1,6 +1,9 @@
 from web3 import Web3
 import time
-w3 = Web3(Web3.HTTPProvider("HTTP://192.168.0.4:8545"))  #w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:8545"))
+
+# ganache_url="HTTP://127.0.0.1:8545"
+ganache_url="http://ganache_db:8545"
+w3 = Web3(Web3.HTTPProvider(ganache_url))
 
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -80,7 +83,7 @@ def assign_address_v3(user):
     from web3 import Web3
     import time
     from hexbytes import HexBytes
-    w3 = Web3(Web3.HTTPProvider("HTTP://192.168.0.4:8545"))  #w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:8545"))
+    w3 = Web3(Web3.HTTPProvider(ganache_url))
     accounts = w3.eth.accounts
     current_user = user
 
@@ -117,7 +120,7 @@ def deploy_contract_v3(private_key):
     bytecode = contract_interface['bin']
     
     # Establish web3 connection
-    w3 = Web3(Web3.HTTPProvider("HTTP://192.168.0.4:8545"))  #w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:8545"))
+    w3 = Web3(Web3.HTTPProvider(ganache_url))
     
     #Obtain user so we know his address for the 'from' field
     user = w3.eth.account.privateKeyToAccount(private_key)
@@ -182,7 +185,7 @@ def publish_data_v3(provider_private_key, contract_address, description="Descrip
     d = compile_and_extract_interface()
     
     # Establish web3 connection
-    w3 = Web3(Web3.HTTPProvider("HTTP://192.168.0.4:8545"))  #w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:8545"))
+    w3 = Web3(Web3.HTTPProvider(ganache_url))
     
     # Obtain user so we know his address for the 'from' field
     private_key = provider_private_key
@@ -222,7 +225,7 @@ def add_requester_v3(requester_private_key, contract_address, license=3, purpose
     d = compile_and_extract_interface()
     
     # Establish web3 connection
-    w3 = Web3(Web3.HTTPProvider("HTTP://192.168.0.4:8545"))  #w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:8545"))
+    w3 = Web3(Web3.HTTPProvider(ganache_url))
     
     # Obtain user so we know his address for the 'from' field
     private_key = requester_private_key
@@ -264,7 +267,7 @@ def update_contract_v3(provider_private_key, contract_address, description="Upda
     d = compile_and_extract_interface()
     
     # Establish web3 connection
-    w3 = Web3(Web3.HTTPProvider("HTTP://192.168.0.4:8545"))  #w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:8545"))
+    w3 = Web3(Web3.HTTPProvider(ganache_url))
     
     # Obtain user so we know his address for the 'from' field
     private_key = provider_private_key
@@ -309,7 +312,7 @@ def update_contract_v3(provider_private_key, contract_address, description="Upda
 def assign_address(user):
     # Establish web3 connection
     from web3 import Web3
-    w3 = Web3(Web3.HTTPProvider("HTTP://192.168.0.4:8545"))  #w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:8545"))
+    w3 = Web3(Web3.HTTPProvider(ganache_url))
     accounts = w3.eth.accounts
     # Obtain user model
     from django.contrib.auth import get_user_model
@@ -351,7 +354,7 @@ def deploy_contract(user):
     bytecode = contract_interface['bin']
     
     # Establish web3 connection
-    w3 = Web3(Web3.HTTPProvider("HTTP://192.168.0.4:8545"))  #w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:8545"))
+    w3 = Web3(Web3.HTTPProvider(ganache_url))
 
     # Obtain user
     current_user = user
@@ -393,7 +396,7 @@ def deploy_contract_with_data(user, description, license, link=""):
     bytecode = contract_interface['bin']
     
     # Establish web3 connection
-    w3 = Web3(Web3.HTTPProvider("HTTP://192.168.0.4:8545"))  #w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:8545"))
+    w3 = Web3(Web3.HTTPProvider(ganache_url))
 
     # Obtin user
     current_user = user
