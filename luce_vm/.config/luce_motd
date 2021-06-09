@@ -1,0 +1,75 @@
+#!/bin/sh
+#
+#    00-header - create the header of the MOTD
+#    Copyright (C) 2009-2010 Canonical Ltd.
+#
+#    Authors: Dustin Kirkland <kirkland@canonical.com>
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program; if not, write to the Free Software Foundation, Inc.,
+#    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+[ -r /etc/lsb-release ] && . /etc/lsb-release
+
+if [ -z "$DISTRIB_DESCRIPTION" ] && [ -x /usr/bin/lsb_release ]; then
+	# Fall back to using the very slow lsb_release utility
+	DISTRIB_DESCRIPTION=$(lsb_release -s -d)
+fi
+
+printf "\n\n"
+printf "================= \n"
+printf "Welcome to LuceVM \n"
+printf "================= \n\n"
+
+printf "This virtual machine was authored by Arno Angerer
+and is designed to facilitate the development of
+the LUCE technical prototype.\n\n"
+
+printf "It is powered by %s \n\n" "$DISTRIB_DESCRIPTION"
+
+
+# Final part of welcome message is conditional on whether the 
+# system preparation scripts have already been run before.
+
+# This stamp is created by prepare_system.sh
+SYSTEM_PREPARED_STAMP=/home/vagrant/.stamps/vagrant_system_prepared_timestamp
+
+# If file does not exist == system has NOT been prepared yet
+if [ ! -f "$SYSTEM_PREPARED_STAMP" ]
+then
+	printf "To complete the setup please run the following commands: \n"
+	printf "(Only required when booting the system for the first time) \n"
+	printf "$ bash prepare_system.sh\n" # Install all packages
+	printf "$ bash prepare_django.sh\n\n" # Initialise Django & DB
+fi
+
+# Check if servers are already running
+tmux has-session -t jup 1> /dev/null 2> /dev/null
+server_test=$? # Store outcome code of last command in variable
+if [ $server_test = 0 ] 
+then
+	printf "The servers are already running..\n\n"
+	exit # Quit script early and don't show further instructions
+fi
+
+# If file does exist == system has already been prepared:
+if [ -f "$SYSTEM_PREPARED_STAMP" ]
+then
+	printf "To start the servers please run the following command: \n"
+	printf "$ bash start_servers.sh\n\n"
+fi
+
+
+
+
+

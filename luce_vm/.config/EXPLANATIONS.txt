@@ -1,0 +1,7 @@
+For future reference here are some explanations of the purpose of each of the files in this folder. The files are all used during the LuceVM provisioning process.
+
+custom.css			: Inserts the Luce logo into Jupyter
+jupyter_notebook_config.py	: To hardcode the 'luce' password into Jupyter
+logo.png			: The luce logo
+luce_jupyter_kernel.json	: To expose the django context to Jupyter kernel
+luce_motd			: Adjust the default welcome message

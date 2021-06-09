@@ -1,0 +1,20 @@
+/*#ipython_notebook::before{content:'<a href="127.0.0.1:8888">LuceVM Jupyter</a>'}*/
+/*#ipython_notebook::before{content:"LuceVM Jupyter"}*/
+/*#ipython_notebook img{display:none;}*/
+
+/* Include custom luce image */
+#ipython_notebook img{                                                                                        
+    display:block;
+    background: url(logo.png) no-repeat;
+    background-size: contain;
+    width: 233px;
+    height: 33px;
+    padding-left: 233px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* Increase padding */
+/*#ipython_notebook {
+    height: 40px !important;
+*/}

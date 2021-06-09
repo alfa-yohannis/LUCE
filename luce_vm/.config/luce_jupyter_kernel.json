@@ -1,0 +1,15 @@
+{
+ "env": {
+    "DJANGO_SETTINGS_MODULE": "lucehome.settings",
+    "PYTHONPATH": "$PYTHONPATH:/vagrant/luce_django/luce"
+ },
+ "argv": [
+  "/home/vagrant/miniconda/envs/luce_vm/bin/python",
+  "-m",
+  "ipykernel_launcher",
+  "-f",
+  "{connection_file}"
+ ],
+ "display_name": "luce_vm",
+ "language": "python"
+}

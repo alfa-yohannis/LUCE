@@ -1,3 +1,5 @@
+import os
+
 # Include the following the script to use the psql server:
 # export DJANGO_USE_PSQL=true
 # This will override the DATABASES variable in settings.py
@@ -6,10 +8,10 @@
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'lucedb',
-        'USER': 'vagrant',
-        'PASSWORD': 'luce',
-        'HOST': '192.168.72.3',
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': 'postgres_db',
         'PORT': '5432',
     }
 }

@@ -6,9 +6,34 @@ LuceVM is a self-contained virtual machine to facilitate web3 development. It en
 
 This repository explains how to set-up LuceVM to access the LUCE Prototype.
 
-Soon a web-hosted version will be made available as well.
+## Run with docker
 
-## Usage of LuceVM
+Build
+
+```bash
+docker build -t vjaiman/luce .
+```
+
+Run
+
+```bash
+docker run -it -p 8000:8000 -p 8888:8888 vjaiman/luce
+```
+
+Run with docker-compose, the ganache DB and postgres DB will be stored in a `data` folder in the same directory as the `docker-compose.yml` file. You will need also to uncomment the ports in the `docker-compose.yml` 
+
+```bash
+docker-compose up -d
+```
+
+> You can easily change the path to the storage folder by copying `.env.sample` to `.env` and change the storage path variable.
+
+Try the webhosted version:
+
+* LUCE Web UI: https://luce.137.120.31.102.nip.io
+* LUCE blockchain access: https://ganache.luce.137.120.31.102.nip.io
+
+## Usage of LuceVM (deprecated)
 LuceVm works on all major operating systems (Linux, Mac and Windows).
 
 * First make sure [VirtualBox](https://www.virtualbox.org/) and [Vagrant](https://www.vagrantup.com/) are installed
@@ -82,3 +107,4 @@ vagrant box remove arnoan/lucedb
 ```
 Then simply delete the folder to which this repository was cloned.  
 There are no other places where information is stored.  
+
