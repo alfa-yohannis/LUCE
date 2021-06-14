@@ -68,5 +68,6 @@ RUN mkdir -p /root/.ganache_db && \
 
 EXPOSE 8000
 EXPOSE 8888
+EXPOSE 8545
 
 ENTRYPOINT [ "/luce/entrypoint.sh" ]

@@ -1,0 +1,8 @@
+sudo sh -c  "echo '111.111.0.101  redis' >> /etc/hosts"
+sudo sh -c  "echo '111.111.0.102  alice-eth' >> /etc/hosts"
+sudo sh -c  "echo '111.111.0.103  alice-node' >> /etc/hosts"
+sudo sh -c  "echo '111.111.0.104  bob-eth' >> /etc/hosts"
+sudo sh -c  "echo '111.111.0.105  bob-xrp' >> /etc/hosts"
+sudo sh -c  "echo '111.111.0.106  bob-node' >> /etc/hosts"
+sudo sh -c  "echo '111.111.0.107  charlie-xrp' >> /etc/hosts"
+sudo sh -c  "echo '111.111.0.108  charlie-node' >> /etc/hosts"

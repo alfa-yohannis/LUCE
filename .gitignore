@@ -39,3 +39,10 @@ ubuntu-xenial-16.04-cloudimg-console.log
 
 /data/
 /.env
+
+#interledger
+.vscode
+interledger/.vscode
+interledger/xrp/node_modules
+interledger/xrp/yarn.lock
+interledger/xrp/yarn-error.log

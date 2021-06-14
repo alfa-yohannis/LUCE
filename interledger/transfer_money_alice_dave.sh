@@ -20,10 +20,11 @@ charlie-cli accounts balance bob --auth hi_charlie
 printf "Charlie's balance: "
 charlie-cli accounts balance charlie --auth hi_charlie
 
+printf "\n"
 alice-cli pay alice \
   --auth alice_password \
   --amount 200000 \
-  --to http://charlie-node:7770/accounts/charlie/spsp
+  --to http://charlie-node:7770/accounts/dave/spsp
 
 # sudo docker run --rm --network local-ilp interledgerrs/ilp-cli \
 #   --node http://alice-node:7770 pay alice \
@@ -48,5 +49,7 @@ printf "\nBob's balance: "
 charlie-cli accounts balance bob --auth hi_charlie
 printf "Charlie's balance: "
 charlie-cli accounts balance charlie --auth hi_charlie
+printf "Dave's balance: "
+charlie-cli accounts balance dave --auth hi_charlie
 
 printf "\n==========================================================\n"
