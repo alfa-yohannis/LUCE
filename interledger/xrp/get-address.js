@@ -13,13 +13,18 @@ const api = new RippleAPI({
 api.connect().then(() => {
   /* begin custom code ------------------------------------ */
   const secret = 'sasPP9PiLPATNRhjSx7rBc4yfRYNw';
-
-  console.log('Derive address from secret', secret);
-  return api.isValidSecret(secret);
-
+  console.log("Expected address: r9SKj7C6uWMCMbDWib1ednjbRJktWEhaZu");
+  console.log('Derive address from secret: ', secret)
+  api.isValidSecret(secret);
+  let keypair = api.deriveKeypair(secret);
+  var public_key = keypair.publicKey;
+  console.log('public key: ', public_key);
+  let derivedAddress = api.deriveAddress(public_key);
+  console.log('derived address : ' + derivedAddress);
+  
 }).then(info => {
-  console.log(info);
-  console.log('isValidSecret done');
+  // console.log(info);
+  console.log('Deriving address done');
 
   /* end custom code -------------------------------------- */
 }).then(() => {

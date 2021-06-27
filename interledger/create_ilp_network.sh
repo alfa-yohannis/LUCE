@@ -1,4 +1,4 @@
-docker network create --subnet=111.111.0.0/24 --gateway=111.111.0.100 local-ilp
+docker network create local-ilp --subnet=111.111.0.0/24
 
 docker run -d \
   --name redis \
@@ -14,14 +14,16 @@ docker run -d \
   --ip 111.111.0.102 \
   -e "RUST_LOG=interledger=trace" \
   interledgerrs/ilp-settlement-ethereum \
-  --private_key 5714ad5f65fb27cb0d0ab914db9252dfe24cf33038a181555a7efc3dcf863ab3 \
+  --private_key 4a2cb86c7d3663abebf7ab86a6ddc3900aee399750f35e65a44ecf843ec39116 \
   --confirmations 0 \
   --poll_frequency 1000 \
-  --ethereum_url https://ganache.luce.137.120.31.102.nip.io \
+  --ethereum_url http://192.168.0.4:8545 \
   --connector_url http://alice-node:7771 \
   --redis_url redis://redis:6379/0 \
-  --asset_scale 9 \
-  --settlement_api_bind_address 0.0.0.0:3000
+  --asset_scale 18 \
+  --settlement_api_bind_address 0.0.0.0:3000 \
+  --watch_incoming \
+  --contract_address 0xf38B59a1a73d76de228baC9f63B9760e3b4fD0FD
 
 docker run -d \
   --name alice-node \
@@ -45,16 +47,17 @@ docker run -d \
   --ip 111.111.0.104 \
   -e "RUST_LOG=interledger=trace" \
   interledgerrs/ilp-settlement-ethereum \
-  --private_key ad740a17686169082f3148dcec143e4730fc69a636d710cb8e4e23ef966feadd \
+  --private_key eeed5b1fc503bd2d9ea7cd2098794bcd4ee9c2f3a07ccab3401a263e02c36f71 \
   --confirmations 0 \
   --poll_frequency 1000 \
-  --ethereum_url https://ganache.luce.137.120.31.102.nip.io \
+  --ethereum_url http://192.168.0.4:8545 \
   --connector_url http://bob-node:7771 \
   --redis_url redis://redis:6379/2 \
-  --asset_scale 9 \
-  --settlement_api_bind_address 0.0.0.0:3000
+  --asset_scale 18 \
+  --settlement_api_bind_address 0.0.0.0:3000 \
+  --watch_incoming
 
-docker run -i \
+docker run -d \
   --name bob-xrp \
   --network local-ilp \
   --add-host bob-xrp:111.111.0.105 \
@@ -64,7 +67,7 @@ docker run -i \
   -e "REDIS_URI=redis://redis:6379/3" \
   -e "ENGINE_PORT=3001" \
   -e "XRP_SECRET=sny8ne9UkMFWA184Lifn1VVFdqrHp" \
-  interledgerjs/settlement-xrp &
+  interledgerjs/settlement-xrp
 
 docker run -d \
   --name bob-node \
@@ -81,7 +84,7 @@ docker run -d \
   --settlement_api_bind_address 0.0.0.0:7771 \
   --exchange_rate.provider CoinCap
 
-docker run -i \
+docker run -d \
   --name charlie-xrp \
   --network local-ilp \
   --add-host charlie-xrp:111.111.0.107 \
@@ -91,7 +94,7 @@ docker run -i \
   -e "REDIS_URI=redis://redis:6379/5" \
   -e "ENGINE_PORT=3000" \
   -e "XRP_SECRET=sasPP9PiLPATNRhjSx7rBc4yfRYNw" \
-  interledgerjs/settlement-xrp &
+  interledgerjs/settlement-xrp
 
 docker run -d \
   --name charlie-node \
@@ -115,19 +118,19 @@ alice-cli accounts create alice \
   --auth hi_alice \
   --ilp-address example.alice \
   --asset-code ETH \
-  --asset-scale 9 \
+  --asset-scale 18 \
   --ilp-over-http-incoming-token alice_password
 
 alice-cli accounts create bob \
   --auth hi_alice \
   --ilp-address example.bob \
   --asset-code ETH \
-  --asset-scale 9 \
+  --asset-scale 18 \
   --settlement-engine-url http://alice-eth:3000 \
   --ilp-over-http-incoming-token bob_password \
   --ilp-over-http-outgoing-token alice_password \
   --ilp-over-http-url http://bob-node:7770/accounts/alice/ilp \
-  --settle-threshold 100000 \
+  --settle-threshold 1 \
   --settle-to 0 \
   --routing-relation Peer
 
@@ -137,27 +140,29 @@ bob-cli accounts create alice \
   --auth hi_bob \
   --ilp-address example.alice \
   --asset-code ETH \
-  --asset-scale 9 \
+  --asset-scale 18 \
   --max-packet-amount 100000 \
   --settlement-engine-url http://bob-eth:3000 \
   --ilp-over-http-incoming-token alice_password \
   --ilp-over-http-outgoing-token bob_password \
   --ilp-over-http-url http://alice-node:7770/accounts/bob/ilp \
-  --min-balance -150000 \
+  --settle-threshold 1 \
+  --settle-to 0 \
   --routing-relation Peer
 
 sleep 5s
 
 bob-cli accounts create charlie \
   --auth hi_bob \
+  --ilp-address example.charlie \
   --asset-code XRP \
   --asset-scale 6 \
   --settlement-engine-url http://bob-xrp:3001 \
   --ilp-over-http-incoming-token charlie_password \
   --ilp-over-http-outgoing-token bob_other_password \
   --ilp-over-http-url http://charlie-node:7770/accounts/bob/ilp \
-  --settle-threshold 10000 \
-  --settle-to -1000000 \
+  --settle-threshold 1 \
+  --settle-to 0 \
   --routing-relation Child
 
 charlie-cli accounts create bob \
@@ -169,17 +174,13 @@ charlie-cli accounts create bob \
   --ilp-over-http-incoming-token bob_other_password \
   --ilp-over-http-outgoing-token charlie_password \
   --ilp-over-http-url http://bob-node:7770/accounts/charlie/ilp \
-  --min-balance -50000 \
+  --settle-threshold 1 \
+  --settle-to 0 \
   --routing-relation Parent
 
 charlie-cli accounts create charlie \
   --auth hi_charlie \
+  --ilp-address example.charlie \
   --asset-code XRP \
   --asset-scale 6 \
   --ilp-over-http-incoming-token charlie_password
-
-charlie-cli accounts create dave \
-  --auth hi_charlie \
-  --asset-code XRP \
-  --asset-scale 6 \
-  --ilp-over-http-incoming-token dave_password
